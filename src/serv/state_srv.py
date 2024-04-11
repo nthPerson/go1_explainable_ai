@@ -13,11 +13,15 @@ def generic_callback(request: GenericRequest, go: Go1):
 def start_go_server(name, port):
     go = Go1()
     start_server(name=name, port=port, callback=lambda request: generic_callback(request, go))
+    go.timer.stop()
 
 def start_go(service_name, service_port):
     process = Process(target=start_go_server, args=(service_name, service_port))
     process.start()
-    process.join()
+    try:
+        process.join()
+    except KeyboardInterrupt:
+        ...
 
 if __name__ == "__main__":
     start_go(ServiceNames.STATEMACHINE, ServicePorts[ServiceNames.STATEMACHINE])

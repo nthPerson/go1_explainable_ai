@@ -30,7 +30,7 @@ def start_server(name=Defaults.DEFAULT_NAME,
             while True:
                 loop(name, sock, callback)
         except KeyboardInterrupt:
-            print("Server is shutting down.")
+            print(f"\nServer shut down by user - freeing port {port}")
         finally:
             sock.close()
 

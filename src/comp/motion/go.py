@@ -11,8 +11,8 @@ class Go1():
         self.state = sdk.HighState()
         self.udp.InitCmdData(self.cmd)
         self.function = lambda: self.stop_cmd()
-        timer = Timer(callback=lambda: self.run())
-        timer.start()
+        self.timer = Timer(callback=lambda: self.run())
+        self.timer.start()
 
 
     def run(self):
