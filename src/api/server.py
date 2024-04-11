@@ -31,7 +31,6 @@ def start_server(name=Defaults.DEFAULT_NAME,
                 loop(name, sock, callback)
         except KeyboardInterrupt:
             print(f"\nServer shut down by user - freeing port {port}")
-        finally:
             sock.close()
 
 if __name__ == "__main__":
