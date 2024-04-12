@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 class ServiceNames():
-    STATEMACHINE = "STATEMACHINE"
+    GO = "GO"
 
 
 ServicePorts = {
-    ServiceNames.STATEMACHINE:   6001,
+    ServiceNames.GO:   6001,
 }
