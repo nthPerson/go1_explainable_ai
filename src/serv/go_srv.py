@@ -24,4 +24,4 @@ def start_go(service_name, service_port):
         ...
 
 if __name__ == "__main__":
-    start_go(ServiceNames.STATEMACHINE, ServicePorts[ServiceNames.STATEMACHINE])
+    start_go(ServiceNames.GO, ServicePorts[ServiceNames.GO])

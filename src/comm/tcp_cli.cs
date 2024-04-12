@@ -6,10 +6,10 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
-public class Server : MonoBehaviour
+public class Client : MonoBehaviour
 {  
     NavigationScript nav_data;
-    private int port = 6006;
+    private int port = 7000;
     private TcpClient client;
 
     private struct VectorStream

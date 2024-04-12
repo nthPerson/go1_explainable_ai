@@ -1,7 +1,7 @@
 import socket
 
 class TCPServer:
-    def __init__(self, host='localhost', port=6000, callback=(), payload_size=4):
+    def __init__(self, host='localhost', port=7000, callback=(), payload_size=4):
         self.host = host
         self.port = port
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

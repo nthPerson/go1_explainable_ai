@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import robot_interface as sdk # type: ignore
-from enum import Enum
 from timer import Timer
 
 class Go1():

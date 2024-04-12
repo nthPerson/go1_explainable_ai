@@ -1,24 +1,20 @@
 using System;
+using System.Collections;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 
-public class BNO055 : MonoBehaviour
+public class Server : MonoBehaviour
 {
-    private const int port = 12121;
-    private const int bufferSize = 1024;
+    private const int port = 7000;
     private TcpListener tcpListener;
-    private byte[] receiveBuffer = new byte[bufferSize];
+    private TcpClient connectedClient;
+    private NetworkStream networkStream;
 
     void Start()
     {
         StartListening();
-    }
-
-    void Update()
-    {
-        ReceiveData();
     }
 
     void StartListening()
@@ -27,41 +23,69 @@ public class BNO055 : MonoBehaviour
         {
             tcpListener = new TcpListener(IPAddress.Any, port);
             tcpListener.Start();
-            Debug.Log("Socket listener started on port " + port);
+            Debug.Log("Server started on port " + port);
+            StartCoroutine(AcceptClients());
         }
         catch (Exception e)
         {
-            Debug.LogError("Error starting socket listener: " + e.Message);
+            Debug.LogError("Error starting server: " + e.Message);
         }
     }
 
-    void ReceiveData()
+    private IEnumerator AcceptClients()
     {
-        if (tcpListener == null)
+        while (true)
         {
-            return;
-        }
-
-        if (tcpListener.Pending())
-        {
-            TcpClient client = tcpListener.AcceptTcpClient();
-            NetworkStream stream = client.GetStream();
-            int bytesRead = stream.Read(receiveBuffer, 0, bufferSize);
-            if (bytesRead > 0)
+            if (tcpListener.Pending())
             {
-                
+                connectedClient = tcpListener.AcceptTcpClient();
+                networkStream = connectedClient.GetStream();
+                StartCoroutine(HandleClient(connectedClient, networkStream));
             }
-            client.Close();
-            stream.Close();
+            yield return null;  
         }
     }
 
-    private void OnDestroy()
+    private IEnumerator HandleClient(TcpClient client, NetworkStream stream)
     {
+        byte[] buffer = new byte[1024];
+        try
+        {
+            while (client.Connected)
+            {
+                if (stream.DataAvailable)
+                {
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    if (bytesRead > 0)
+                    {
+                        string receivedText = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                        Debug.Log("Received data: " + receivedText);
+                    }
+                }
+                yield return null;  
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error handling client: " + e.Message);
+        }
+        finally
+        {
+            stream.Close();
+            client.Close();
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (networkStream != null)
+            networkStream.Close();
+        if (connectedClient != null)
+            connectedClient.Close();
         if (tcpListener != null)
         {
             tcpListener.Stop();
-            Debug.Log("Socket listener stopped.");
+            Debug.Log("Server stopped.");
         }
     }
 }
