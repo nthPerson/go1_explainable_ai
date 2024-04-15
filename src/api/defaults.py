@@ -2,7 +2,7 @@
 from req_resp import Object
 
 class Defaults():
-    LOCALHOST = 'localhost'
+    LOCALHOST = '0.0.0.0'
     PORT = 6002
     DEFAULT_NAME = "Generic"
     BUFFER_SIZE = 1024

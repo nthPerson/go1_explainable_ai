@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from tcp_srv import TCPServer
 from dataclasses import dataclass
 from struct import unpack, calcsize
@@ -7,6 +9,7 @@ from req_resp import GenericRequest
 
 DATA_REPRESENTATION = '2f' # Two Floats
 PACKET_SIZE = calcsize(DATA_REPRESENTATION)
+DOG_IP = '192.168.12.1'
 
 @dataclass
 class VectorStream():
@@ -20,7 +23,8 @@ def callback(data):
     x, z = unpack(DATA_REPRESENTATION, data)
     msg = VectorStream(x, z)
     print_data(msg)
-    call_service(port=ServicePorts[ServiceNames.GO], request=GenericRequest(function="vect", args={"x": x, "y": z}))
+    call_service(host=DOG_IP, port=ServicePorts[ServiceNames.GO], request=GenericRequest(function="vector", args={"x": msg.x, "y": msg.z}))
 
 if __name__ == "__main__":
-    tcp_server = TCPServer(port=6006, callback=lambda data: callback(data), payload_size=PACKET_SIZE)
+    tcp_server = TCPServer(port=7000, callback=lambda data: callback(data), payload_size=PACKET_SIZE)
+    tcp_server.run()

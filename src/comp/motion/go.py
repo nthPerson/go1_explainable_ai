@@ -2,14 +2,18 @@
 import robot_interface as sdk # type: ignore
 from timer import Timer
 
+HIGHLEVEL = 0xee
+
 class Go1():
     def __init__(self):
-        HIGHLEVEL = 0xee
         self.udp = sdk.UDP(HIGHLEVEL, 8080, "192.168.123.161", 8082)
         self.cmd = sdk.HighCmd()
         self.state = sdk.HighState()
-        self.udp.InitCmdData(self.cmd)
         self.action = lambda: self.stop_cmd()
+        self.start()
+
+    def start(self):
+        self.udp.InitCmdData(self.cmd)
         self.timer = Timer(callback=lambda: self.send_cmd(self.action))
         self.timer.start()        
 
@@ -57,8 +61,8 @@ class Go1():
         print("turn_cmd")
         self.cmd.mode = 2
         self.cmd.gaitType = 2
-        self.cmd.velocity[0] = vel
-        self.cmd.yawSpeed = 3
+        self.cmd.velocity[0] = 0.2
+        self.cmd.yawSpeed = vel
 
     def vector_cmd(self, x, y):
         print("vector_cmd")
@@ -66,6 +70,9 @@ class Go1():
         self.cmd.gaitType = 1
         self.cmd.velocity = [x, y]
         self.cmd.bodyHeight = 0.1
+
+    def shutdown(self):
+        self.timer.stop()
 
     def stop(self):
         self.action = lambda: self.stop()

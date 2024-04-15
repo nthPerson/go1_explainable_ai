@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+
 import socket
 
 class TCPServer:
-    def __init__(self, host='localhost', port=7000, callback=(), payload_size=4):
+    def __init__(self, host='0.0.0.0', port=6000, callback=(), payload_size=4):
         self.host = host
         self.port = port
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -43,14 +45,18 @@ class TCPServer:
         finally:
             connection.close()
 
+    def run(self):
+        try:
+            self.bind()
+            self.listen()
+            self.accept_connections()
+        except KeyboardInterrupt:
+            print(f"Server shutdown by user, freeing port {self.port}")
+
     def close(self):
         self.server_socket.close()
         print("Server closed.")
 
 if __name__ == "__main__":
     server = TCPServer()
-    server.bind()
-    server.listen()
-    server.accept_connections()
-
-
+    server.run()
