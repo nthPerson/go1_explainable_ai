@@ -8,14 +8,8 @@ class Go1():
     def __init__(self):
         self.udp = sdk.UDP(HIGHLEVEL, 8080, "192.168.123.161", 8082)
         self.cmd = sdk.HighCmd()
-        self.state = sdk.HighState()
-        self.action = lambda: self.stop_cmd()
-        self.start()
-
-    def start(self):
+        self.state = sdk.HighState() 
         self.udp.InitCmdData(self.cmd)
-        self.timer = Timer(callback=lambda: self.send_cmd(self.action))
-        self.timer.start()        
 
     def reset_cmd(self):
         self.cmd.mode = 0      
@@ -37,53 +31,59 @@ class Go1():
         self.udp.Send()        
 
     def stop_cmd(self):
-        print("stop_cmd")
         self.cmd.mode = 2
         self.cmd.gaitType = 1
         self.cmd.velocity = [0, 0]
         self.cmd.bodyHeight = 0.1
 
     def walk_cmd(self, vel):
-        print("walk_cmd")
         self.cmd.mode = 2
         self.cmd.gaitType = 1
         self.cmd.velocity = [vel, 0]
         self.cmd.bodyHeight = 0.1
 
     def side_cmd(self, vel):
-        print("side_cmd")
         self.cmd.mode = 2
         self.cmd.gaitType = 1
         self.cmd.velocity = [0, vel]
         self.cmd.bodyHeight = 0.1
 
     def turn_cmd(self, vel):
-        print("turn_cmd")
         self.cmd.mode = 2
-        self.cmd.gaitType = 2
+        self.cmd.gaitType = 1
         self.cmd.velocity[0] = 0.2
         self.cmd.yawSpeed = vel
 
-    def vector_cmd(self, x, y):
-        print("vector_cmd")
+    def vector_cmd(self, x, y, yaw):
         self.cmd.mode = 2
         self.cmd.gaitType = 1
         self.cmd.velocity = [x, y]
+        self.cmd.yawSpeed = yaw
         self.cmd.bodyHeight = 0.1
 
-    def shutdown(self):
-        self.timer.stop()
+    """ Public API """
 
     def stop(self):
-        self.action = lambda: self.stop()
+        self.send_cmd(lambda: self.stop_cmd())
+        print("Recieved stop command")
     def walk(self, vel):
-        self.action = lambda: self.walk_cmd(vel)
+        self.send_cmd(lambda: self.walk_cmd(vel)) 
+        print("Recieved walk command")
     def side(self, vel):
-        self.action = lambda: self.side_cmd(vel)
+        self.send_cmd(lambda: self.side_cmd(vel)) 
+        print("Recieved side command")
     def turn(self, vel):
-        self.action = lambda: self.turn_cmd(vel)
-    def vector(self, x, y):
-        self.action = lambda: self.vector_cmd(x, y)
+        self.send_cmd(lambda: self.turn_cmd(vel)) 
+        print("Recieved turn command")
+    def vector(self, x, y, yaw):
+        self.send_cmd(lambda: self.vector_cmd(x, y, yaw))
+        print("Recieved vector command")
+    def print_info(self):
+        euler = self.state.imu.rpy
+        accel = self.state.imu.accelerometer
+        print(f"{euler[0]}, {euler[1]}, {euler[2]}")
+        print(f"{accel[0]}, {accel[1]}, {accel[2]}")
+        return euler, accel
 
 if __name__ == "__main__":
     go1 = Go1()
