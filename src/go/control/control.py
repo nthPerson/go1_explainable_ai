@@ -31,8 +31,7 @@ def adjust_angle(initial, desired):
     current = initial
     while not float_equals(current, desired):
         current = get_current_angle()
-        if current is not None:
-            print_info(current, desired)        
+        print_info(current, desired)        
         turn(REASONABLE_VELOCITY)
         rate.sleep()
 
