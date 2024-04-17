@@ -1,0 +1,31 @@
+def turn_in_place_ninety():
+    rate = rospy.Rate(15)
+    i = 0
+    while i < 95:
+        turn(-3.14/8)
+        i += 1
+        rate.sleep()
+
+def adjust_side_drift():
+    rate = rospy.Rate(15)
+    i = 0
+    while i < 68:
+        side(-0.1)
+        i += 1
+        rate.sleep()
+    
+def adjust_forward_drift():
+    rate = rospy.Rate(15)
+    i = 0
+    while i < 28:
+        walk(-0.1)
+        i += 1
+        rate.sleep()
+
+def turn_90():
+    turn_in_place_ninety()
+    adjust_side_drift()
+    adjust_forward_drift()
+
+if __name__ == "__main__":
+    rospy.init_node('Were_Team_GO')

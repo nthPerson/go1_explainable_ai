@@ -30,6 +30,14 @@ class Go1():
         self.udp.SetSend(self.cmd)
         self.udp.Send()        
 
+    def euler_cmd(self, roll, pitch, yaw):
+        self.cmd.mode = 3
+        self.cmd.gaitType = 1
+        self.cmd.bodyHeight = 0.1
+        self.cmd.euler[0] = roll
+        self.cmd.euler[1] = pitch
+        self.cmd.euler[2] = yaw
+
     def stop_cmd(self):
         self.cmd.mode = 2
         self.cmd.gaitType = 1
@@ -78,12 +86,14 @@ class Go1():
     def vector(self, x, y, yaw):
         self.send_cmd(lambda: self.vector_cmd(x, y, yaw))
         print("Recieved vector command")
-    def print_info(self):
+    def euler(self, roll, pitch, yaw):
+        self.send_cmd(lambda: self.euler_cmd(roll, pitch, yaw))
+        print("Recieved euler command")
+    def get_info(self):
         euler = self.state.imu.rpy
         accel = self.state.imu.accelerometer
-        print(f"{euler[0]}, {euler[1]}, {euler[2]}")
-        print(f"{accel[0]}, {accel[1]}, {accel[2]}")
-        return euler, accel
+        gyro =  self.state.imu.gyroscope
+        return euler, accel, gyro
 
 if __name__ == "__main__":
     go1 = Go1()
