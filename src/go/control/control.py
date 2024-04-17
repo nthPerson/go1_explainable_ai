@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from go_clnt import get_info, turn
 from imu import get_imu_data
 from float import float_equals
