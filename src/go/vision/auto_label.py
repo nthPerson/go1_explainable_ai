@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import cv2
 import numpy as np
 import os
@@ -11,9 +13,8 @@ from IPython.display import display
 from pathlib import Path
 from PIL import Image
 from transformers import XCLIPProcessor, XCLIPModel
+
 class AutoLabeler():
-
-
     def __init__(self):
         # Define the base directory
         base_directory = os.path.dirname(os.path.realpath(__file__))
@@ -30,7 +31,7 @@ class AutoLabeler():
         if not os.path.exists(self.save_directory_full_vids):
             os.makedirs(self.save_directory_full_vids)
         if not os.path.exists(self.save_good_vids_directory):
-            os.makedirs(self.saveoutput_good_vids_directory)
+            os.makedirs(self.save_good_vids_directory)
         # Load the model and processor
         self.model_name = "microsoft/xclip-base-patch16-zero-shot"
         self.device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
@@ -42,7 +43,7 @@ class AutoLabeler():
         self.video_filename = "output"
     
     def input_handler(self):
-        input("Press Enter to stooutputp recording...\n")
+        input("Press Enter to stop recording...\n")
         self.is_recording = False
     def record_video_segment(self, local_server_ip, save_directory, video_filename = 'output', is_full_video=False,is_train=False, label = None):
         # Determine the filename

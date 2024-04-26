@@ -25,8 +25,9 @@ def get_desired_angle(current, relative):
         return desired
     return None
 
-def adjust_angle(initial, desired):
-    REASONABLE_VELOCITY = .2
+def adjust_angle(initial, desired, relative):
+    sign = -1 if relative < 0 else 1
+    REASONABLE_VELOCITY = .2 * sign
     if initial is None or desired is None: 
         return
     rate = rospy.Rate(15)
@@ -39,6 +40,7 @@ def adjust_angle(initial, desired):
 
 if __name__ == "__main__":
     rospy.init_node('Were_Team_GO')
+    DESIRED_MOVEMENT = 5
     current = get_current_angle()
-    desired = get_desired_angle(current, radians(90))
-    adjust_angle(current, desired)
+    desired = get_desired_angle(current, radians(DESIRED_MOVEMENT))
+    adjust_angle(current, desired, DESIRED_MOVEMENT)

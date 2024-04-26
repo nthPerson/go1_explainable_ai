@@ -52,6 +52,7 @@ class TCPServer:
             self.accept_connections()
         except KeyboardInterrupt:
             print(f"Server shutdown by user, freeing port {self.port}")
+            self.close()
 
     def close(self):
         self.server_socket.close()

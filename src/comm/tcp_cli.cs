@@ -42,18 +42,18 @@ public class Client : MonoBehaviour
         return data;
     }
 
-    void SendMessage(in VectorStream message)
+    void SendVectorStream(in VectorStream message)
     {
         try
         {            
-            Byte[] byte_data = ConvertMessageToBytes(message)
+            Byte[] byte_data = ConvertMessageToBytes(message);
             NetworkStream stream = client.GetStream();
-            stream.Write(data, 0, data.Length);
+            stream.Write(byte_data, 0, byte_data.Length);
             Debug.Log("VectorStream sent: " + message);
         }
         catch (Exception e)
         {
-            Debug.Log("Error sending message: " + e.VectorStream);
+            Debug.Log("Error sending message: " + e);
         }
     }
 }
