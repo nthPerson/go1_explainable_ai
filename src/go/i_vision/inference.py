@@ -1,29 +1,24 @@
 #!/usr/bin/env python3
-print("what")
 import torch
-print("641")
 import numpy as np
-print("11")
 import os
-print("21")
 from decord import VideoReader
-print("41")
 import shutil
-print("51")
-# import torch
+# import torch # This is insane if torch is imported here it doesn't work
 
-class ActivityInference:
-    def __init__(self, label_context):
+class Inferencer:
+    def __init__(self, label_context, dir_context):
         self.label_context = label_context
+        self.dir_context = dir_context
         self.classes = [
-        'human is hammering',
-        'human is measuring',
-        'human is stacking boxes',
-        'human is scissoring',
-        'human is cutting',
-        'human is drilling',
-        'no human in scene'
-    ]
+            'human is hammering',
+            'human is measuring',
+            'human is stacking boxes',
+            'human is scissoring',
+            'human is cutting',
+            'human is drilling',
+            'no human in scene'
+        ]
 
     def infer_activity(self, video_path, start_time=0, stop_time=16):
         try:
@@ -80,5 +75,5 @@ class ActivityInference:
         clas, prob = self.infer_activity(video_file_path)
         print(prob)
         if prob > 0.5:
-            good_path = os.path.join(self.dir_contxt.good_vids_dir, f"{clas}_{timestamp}.mp4")
+            good_path = os.path.join(self.dir_context.good_vids_dir, f"{clas}_{timestamp}.mp4")
             shutil.copy(video_file_path, good_path)

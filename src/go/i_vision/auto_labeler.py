@@ -2,18 +2,19 @@
 
 import threading
 from datetime import datetime
-from vid_process import ActivityInference
-from vid_record import VideoRecorder
+from inference import Inferencer
+from recorder import VideoRecorder
 from vision_config import DirectoryContext, LabelingContext
 from is_recording import is_recording
+from pathlib import Path
 
 class AutoLabeler:
     def __init__(self, local_server_ip):
         self.local_server_ip = local_server_ip
-        self.dir_context = DirectoryContext()
+        self.dir_context = DirectoryContext(base_dir=f"{Path.home()}/dog_py/src/go/i_vision")
         self.recorder = VideoRecorder(self.dir_context)
         self.label_context = LabelingContext()
-        self.activity_inference = ActivityInference(self.label_context)
+        self.inferencer = Inferencer(self.label_context, self.dir_context)
 
     def monitor_video_stream(self):
         input_thread = threading.Thread(target=self.input_handler)
@@ -28,7 +29,7 @@ class AutoLabeler:
             return
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.recorder.archive_video_segment(video_file_path, timestamp)
-        self.activity_inference.evaluate_and_save(video_file_path, timestamp)
+        self.inferencer.evaluate_and_save(video_file_path, timestamp)
 
     def input_handler(self):
         global is_recording
