@@ -109,7 +109,6 @@ class PeopleDetector:
         self.save_dir = save_dir
         self.pt = pt
         self.vid_stride = vid_stride
-        print("*********** FINISHED INIT **************")
 
     def load(self, webcam, screenshot, source, imgsz, stride, pt, vid_stride):
         bs = 1  # batch_size
@@ -194,39 +193,16 @@ class PeopleDetector:
                     for c in det[:, 5].unique():
                         n = (det[:, 5] == c).sum()  # detections per class
                         s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
-                        self.detect_person(c=c)
+                        return self.detect_person(c=c)
+                    
 
-    def detect(self, video):
-        source, webcam, screenshot = self.ext_source(video)
-        dataset, webcam, bs = self.load(webcam, screenshot, source, self.imgsz, self.stride, self.pt, self.vid_stride)
-        self.infer(self.model, self.names, dataset, self.save_dir, webcam, self.pt, bs)
+    def detect(self, filepath):
+        try:
+            source, webcam, screenshot = self.ext_source(filepath)
+            dataset, webcam, bs = self.load(webcam, screenshot, source, self.imgsz, self.stride, self.pt, self.vid_stride)
+            return self.infer(self.model, self.names, dataset, self.save_dir, webcam, self.pt, bs)
+        except:
+            print("Encountered error with source, continuing...")
 
-import time
 if __name__ == '__main__':
     detector = PeopleDetector()
-
-    detector.detect('/home/dicelabs/dog_py/src/go/i_vision/full_vids/20240429_134251.mp4')
-
-    print("************************************************")
-    time.sleep(3)
-    print("************************************************")
-
-    detector.detect('/home/dicelabs/dog_py/src/go/i_vision/full_vids/20240429_134255.mp4')
-
-
-""" /home/dicelabs/dog_py/src/go/i_vision/full_vids/20240429_134251.mp4 """
-""" /home/dicelabs/dog_py/src/go/i_vision/full_vids/20240429_134255.mp4 """
-
-"""  model, names, imgsz, stride, save_dir, pt, vid_stride = detector.init(**vars(opt)) """
-
-# source, webcam, screenshot = ext_source('/home/dicelabs/dog_py/src/go/i_vision/full_vids/20240429_134251.mp4')
-# dataset, webcam, bs = load(webcam, screenshot, source, imgsz, stride, pt, vid_stride)
-# infer(model, names, dataset, save_dir, webcam, pt, bs, **vars(opt))
-
-# print("************************************************")
-# time.sleep(3)
-# print("************************************************")
-
-# source, webcam, screenshot = ext_source('/home/dicelabs/dog_py/src/go/i_vision/full_vids/20240429_134255.mp4')
-# dataset, webcam, bs = load(webcam, screenshot, source, imgsz, stride, pt, vid_stride)
-# infer(model, names, dataset, save_dir, webcam, pt, bs, **vars(opt))
