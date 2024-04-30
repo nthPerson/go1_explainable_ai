@@ -12,8 +12,6 @@ def generic_callback(request: GenericRequest, detector: PeopleDetector):
 
 def start_detector_server(name, port):
     detector = PeopleDetector()
-    opt = detector.parse_opt()
-    model, names, imgsz, stride, save_dir, pt, vid_stride = detector.init(**vars(opt))
     try:
         start_server(name=name, port=port, callback=lambda request: generic_callback(request, detector))
     except Exception as e:
@@ -28,4 +26,4 @@ def start_detector(service_name, service_port):
         ...
 
 if __name__ == "__main__":
-    start_detector(ServiceNames.GO, ServicePorts[ServiceNames.GO])
+    start_detector(ServiceNames.YOLO, ServicePorts[ServiceNames.YOLO])
