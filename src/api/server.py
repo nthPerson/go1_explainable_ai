@@ -23,6 +23,7 @@ def start_server(name=Defaults.DEFAULT_NAME,
                 host=Defaults.LOCALHOST, port=Defaults.PORT, 
                 callback=Defaults.default_callback):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.bind((host, port))
         sock.listen()
         Logging.log_server_active_message(name, host, port)
@@ -31,6 +32,7 @@ def start_server(name=Defaults.DEFAULT_NAME,
                 loop(name, sock, callback)
         except KeyboardInterrupt:
             print(f"\nServer shut down by user - freeing port {port}")
+            sock.shutdown(socket.SHUT_RDWR)
             sock.close()
 
 if __name__ == "__main__":

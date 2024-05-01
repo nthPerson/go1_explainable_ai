@@ -12,6 +12,7 @@ class TCPServer:
 
     def bind(self):
         self.server_socket.bind((self.host, self.port))
+        self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         print(f"Server bound to {self.host}:{self.port}")
 
     def listen(self):
@@ -42,6 +43,7 @@ class TCPServer:
                     break
         except Exception as e:
             print(f"Connection handling error: {e}")
+            self.server_socket.shutdown(socket.SHUT_RDWR)
         finally:
             connection.close()
 

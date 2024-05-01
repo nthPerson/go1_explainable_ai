@@ -13,7 +13,6 @@ DOG_IP = '192.168.12.1'
 def callback(data):
     x = unpack(DATA_REPRESENTATION, data)
     vel = 39.37/45.2*x[0]
-    # print(vel)
     call_service(host=DOG_IP, port=ServicePorts[ServiceNames.GO], request=GenericRequest(function="walk", args={"vel": vel}))
 
 if __name__ == "__main__":
