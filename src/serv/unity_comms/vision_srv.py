@@ -32,7 +32,7 @@ def setup_server():
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server_socket.bind(('0.0.0.0', 7002))
     server_socket.listen(1)
-    print("Python server is listening on port 7002...")
+    print("Vision service is listening on 0.0.0.0:7002...")
     return server_socket
 
 def connect_sock(server_socket):

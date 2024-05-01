@@ -15,5 +15,5 @@ def callback(data):
     call_service(host=DOG_IP, port=ServicePorts[ServiceNames.GO], request=GenericRequest(function="turn", args={"vel": 1.545*x[0]}))
 
 if __name__ == "__main__":
-    tcp_server = TCPServer(port=7001, callback=lambda data: callback(data), payload_size=PACKET_SIZE)
+    tcp_server = TCPServer(port=7001, name='Angular Velocity', callback=lambda data: callback(data), payload_size=PACKET_SIZE)
     tcp_server.run()

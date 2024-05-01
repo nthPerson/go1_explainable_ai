@@ -3,21 +3,21 @@
 import socket
 
 class TCPServer:
-    def __init__(self, host='0.0.0.0', port=6000, callback=(), payload_size=4):
+    def __init__(self, name='default', host='0.0.0.0', port=6000, callback=(), payload_size=4):
         self.host = host
         self.port = port
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.callback = callback
         self.payload_size = payload_size
+        self.name = name
 
     def bind(self):
         self.server_socket.bind((self.host, self.port))
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        print(f"Server bound to {self.host}:{self.port}")
 
     def listen(self):
         self.server_socket.listen(1)
-        print(f"Server listening on {self.host}:{self.port}")
+        print(f"{self.name} Service listening on {self.host}:{self.port}")
 
     def accept_connections(self):
         try:

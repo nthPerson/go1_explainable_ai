@@ -5,14 +5,15 @@ from services import ServiceNames, ServicePorts
 from req_resp import GenericRequest
 from snap import Snapper
 
+""" # /home/dicelabs/dog_py/src/go/videos/person.jpeg """
+
 def detect():
     snapper = Snapper()
     snapper.get_frame()
     return call_service(port=ServicePorts[ServiceNames.YOLO], 
                 request=GenericRequest(
                     function="detect", 
-                    # /home/dicelabs/dog_py/src/go/vision/current_frame.jpg
-                    args={"filepath": "/home/dicelabs/dog_py/src/go/videos/person.jpeg"}
+                    args={"filepath": "/home/dicelabs/dog_py/src/go/vision/current_frame.jpg"}
     ))
 
 if __name__ == "__main__":
