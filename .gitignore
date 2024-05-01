@@ -4,3 +4,9 @@ build
 .vscode
 *.pt
 labels
+*.mp4
+*.jpg
+*.jpeg
+*.yml
+*.yaml
+__init__.py
