@@ -13,7 +13,7 @@ def detect():
     return call_service(port=ServicePorts[ServiceNames.YOLO], 
                 request=GenericRequest(
                     function="detect", 
-                    args={"filepath": "/home/dicelabs/dog_py/src/go/vision/current_frame.jpg"}
+                    args={"filepath": "/home/dicelabs/dog_py/src/go/vision/snapper/current_frame.jpg"}
     ))
 
 if __name__ == "__main__":
