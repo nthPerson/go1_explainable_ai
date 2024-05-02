@@ -1,35 +1,37 @@
 #!/usr/bin/env python3
 
 import subprocess
-from pynput import keyboard
+import signal
+import os
 
 INVOKE_PY_INTERPRETER = "python3"
 angular_srv =   ["angular_srv.py"]
 linear_srv =    ["linear_srv.py"]
 vision_srv =    ["vision_srv.py"]
-EXIT_KEY = 'c'
-
-def key_valid(key):
-     return hasattr(key, 'char') and key.char is not None
-
-def on_key_press(key, processes):
-    if key_valid(key):
-        if key.char == EXIT_KEY:
-            for pid in processes:
-                pid.kill()
-            return False # Exit
 
 def fork_processes(scripts):
-    processes=[]
+    processes = []
     for script in scripts:
         process = subprocess.Popen(script)
         processes.append(process)
     return processes
 
+def terminate_processes(processes):
+    for process in processes:
+        if process.poll() is None:  
+            process.kill()  
+    print("All child processes terminated.")
+
 if __name__ == "__main__":
     scripts = [angular_srv, linear_srv, vision_srv]
     processes = fork_processes(scripts)
-    with keyboard.Listener(
-        on_press=lambda key: on_key_press(key, processes)
-    ) as listener:
-        listener.join()
+
+    def signal_handler(signum, frame):
+        print("Received signal to terminate. Cleaning up...")
+        terminate_processes(processes)
+        os._exit(0)  
+
+    signal.signal(signal.SIGINT, signal_handler)
+
+    for process in processes:
+        process.wait()
