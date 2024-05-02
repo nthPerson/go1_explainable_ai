@@ -2,11 +2,27 @@
 
 from yolo_clnt import detect
 import socket
+import struct
+import time
+import threading
 
-def callback(conn):
-    response = detect()
-    conn.sendall(bytes(response))
-    conn.shutdown(socket.SHUT_WR)
+MSG_FORMAT = '?'
+
+human_detected = False
+
+def detection_thread():
+    global human_detected
+    while True:
+        human_detected = 0
+        time.sleep(.1) # Add a delay to avoid excessive polling
+
+def callback(conn: socket.socket):
+    response = human_detected
+    raw_data = struct.pack(MSG_FORMAT, response)
+    try:
+        conn.sendall(raw_data)
+    except BrokenPipeError:
+        print("Connection closed unexpectedly by the client.")
 
 def print_shutdown():
     SHUTDOWN_MSG = "User wants to shutdown, cleaning up resources"
@@ -15,7 +31,7 @@ def print_shutdown():
 def handle_request(conn, sock):
     try:
         while True:
-            data = conn.recv(1024)
+            data = conn.recv(4)
             if not data:
                 break
             callback(conn)
@@ -35,7 +51,7 @@ def setup_server():
     print("Vision service is listening on 0.0.0.0:7002...")
     return server_socket
 
-def connect_sock(server_socket):
+def connect_sock(server_socket: socket.socket):
     try:
         conn, addr = server_socket.accept()
         print(f"Connected by {addr}")
@@ -43,8 +59,12 @@ def connect_sock(server_socket):
     except KeyboardInterrupt:
         print("Closed before connection could be made")
         exit()
-        
+
 def main():
+    detection_thread_obj = threading.Thread(target=detection_thread)
+    detection_thread_obj.daemon = True
+    detection_thread_obj.start()
+
     server_socket = setup_server()
     conn = connect_sock(server_socket)
     handle_request(conn, server_socket)
