@@ -34,13 +34,11 @@ class TCPServer:
             while True:
                 data = connection.recv(self.payload_size)
                 if not data:
-                    print("No data received, closing connection.")
-                    break
-                if len(data) == self.payload_size:
-                    self.callback(data)
-                else:
-                    print("Received incomplete data.")
-                    break
+                    raise Exception("No data received, closing connection.")
+                # if len(data) == self.payload_size:
+                self.callback(data)
+                # else:
+                #     raise Exception("Received incomplete data.")
         except Exception as e:
             print(f"Connection handling error: {e}")
             self.server_socket.shutdown(socket.SHUT_RDWR)
