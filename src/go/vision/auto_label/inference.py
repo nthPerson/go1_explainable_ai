@@ -4,6 +4,7 @@ import numpy as np
 import os
 from decord import VideoReader
 import shutil
+from speak_clnt import speak
 # import torch # This is insane if torch is imported here it doesn't work
 
 class Inferencer:
@@ -32,6 +33,7 @@ class Inferencer:
             print("None of the assigned activities is detected.")
         else:
             print(f"Detected activity: {activity}")
+            speak(activity)
         return activity, prob
 
     def predict_activity_probabilities(self, inputs):

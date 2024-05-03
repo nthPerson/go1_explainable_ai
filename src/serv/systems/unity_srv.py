@@ -8,6 +8,7 @@ INVOKE_PY_INTERPRETER = "python3"
 angular_srv =   ["angular_srv.py"]
 linear_srv =    ["linear_srv.py"]
 vision_srv =    ["vision_srv.py"]
+speech_srv =    ["speech_srv.py"]
 
 def fork_processes(scripts):
     processes = []
@@ -22,8 +23,9 @@ def terminate_processes(processes):
             process.kill()  
     print("All child processes terminated.")
 
+"""  vision_srv ,  """
 if __name__ == "__main__":
-    scripts = [angular_srv, linear_srv, vision_srv]
+    scripts = [angular_srv, linear_srv, speech_srv]
     processes = fork_processes(scripts)
 
     def signal_handler(signum, frame):

@@ -13,7 +13,7 @@ human_detected = False
 def detection_thread():
     global human_detected
     while True:
-        human_detected = 0
+        human_detected = detect()
         time.sleep(.1) # Add a delay to avoid excessive polling
 
 def callback(conn: socket.socket):
