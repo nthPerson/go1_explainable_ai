@@ -23,4 +23,4 @@ class SpeechProcessor():
 
 if __name__ == "__main__":
     processor = SpeechProcessor()
-    processor.speak("human is drilling")
+    processor.speak("I'm a robot talking dog, what else do you want bitch")
