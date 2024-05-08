@@ -12,7 +12,8 @@ DOG_IP = '192.168.12.1'
 
 def callback(data):
     x = unpack(DATA_REPRESENTATION, data)
-    call_service(host=DOG_IP, port=ServicePorts[ServiceNames.GO], request=GenericRequest(function="turn", args={"vel": 1.545*x[0]}))
+    ang_vel = 1.545*x[0]
+    call_service(host=DOG_IP, port=ServicePorts[ServiceNames.GO], request=GenericRequest(function="turn", args={"vel": ang_vel}))
 
 if __name__ == "__main__":
     tcp_server = TCPServer(port=7001, name='Angular Velocity', callback=lambda data: callback(data), payload_size=PACKET_SIZE)
