@@ -6,9 +6,7 @@ import struct
 import time
 import threading
 
-MSG_FORMAT = '?'
-
-human_detected = False
+human_detected = False # It's one global, get over it
 
 def detection_thread():
     global human_detected
@@ -17,6 +15,7 @@ def detection_thread():
         time.sleep(.1) # Add a delay to avoid excessive polling
 
 def callback(conn: socket.socket):
+    MSG_FORMAT = '?'
     response = human_detected
     raw_data = struct.pack(MSG_FORMAT, response)
     try:
