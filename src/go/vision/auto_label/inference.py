@@ -33,7 +33,7 @@ class Inferencer:
             print("None of the assigned activities is detected.")
         else:
             print(f"Detected activity: {activity}")
-            speak(activity)
+            # speak(activity)
         return activity, prob
 
     def predict_activity_probabilities(self, inputs):
