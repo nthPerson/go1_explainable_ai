@@ -10,3 +10,5 @@ labels
 *.yml
 *.yaml
 __init__.py
+*.webp
+yolov5
