@@ -26,12 +26,12 @@ def send_signal_to_dog(filename: str):
         Filename is a file already on the dog that you would like to trigger it to play
     """
     try:
-        subprocess.run([BASH_INTERPRETER, TRIGGER_WAV_SCRIPT], args=[filename], check=True)
+        subprocess.run([BASH_INTERPRETER, TRIGGER_WAV_SCRIPT, filename], check=True)
         print(BASH_SUCCESS)
     except subprocess.CalledProcessError as e:
         print(BASH_ERROR, e)
 
-def send_file_to_dog():
+def send_temp_wav_file_to_dog():
     try:
         subprocess.run([BASH_INTERPRETER, SEND_WAV_SCRIPT], check=True)
         print(BASH_SUCCESS)
@@ -51,21 +51,20 @@ class SpeechProcessor():
         self.engine = pyttsx3.init()
         self.engine.setProperty('rate',125)
 
-    def speak(self, phrase: str, file: str=TEMPORARY_WAV_FILE, custom_phrase: bool=False):
+    def speak(self, phrase: str, file: str=TEMPORARY_WAV_FILE):
         self.engine.say(phrase)
         self.engine.save_to_file(phrase, file)
-        self.engine.runAndWait()
-        if custom_phrase:
-            send_file_to_dog()
+        if phrase == "Going To Next Target":
+            send_signal_to_dog("target.wav")
+        elif phrase == "Entering Search State":
+            send_signal_to_dog("search.wav")
+        elif phrase == "Human Detected":
+            send_signal_to_dog("human.wav")
+        elif phrase == "Starting Activity Recognition":
+            send_signal_to_dog("activity.wav")
         else:
-            if phrase == "Going To Next Target":
-                send_signal_to_dog("target.wav")
-            elif phrase == "Entering Search State":
-                send_signal_to_dog("search.wav")
-            elif phrase == "Human Detected":
-                send_signal_to_dog("human.wav")
-            elif phrase == "Starting Activity Recognition":
-                send_signal_to_dog("activity.wav")
+            send_temp_wav_file_to_dog()
+        self.engine.runAndWait()
 
 if __name__ == "__main__":
     processor = SpeechProcessor()
