@@ -5,9 +5,8 @@ from forker import Forker
 if __name__ == "__main__":
     Forker.run_scripts(
         [
-            "angular_srv.py",
-            "linear_srv.py",
-            "vision_srv.py",
-            "speech_srv.py"
+            "unity_srv.py",
+            "speak_srv.py",
+            "ar_srv.py"
         ]
     )
