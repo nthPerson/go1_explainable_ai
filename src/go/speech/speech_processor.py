@@ -54,28 +54,28 @@ class SpeechProcessor():
     def speak(self, phrase: str, file: str=TEMPORARY_WAV_FILE):
         self.engine.say(phrase)
         self.engine.save_to_file(phrase, file)
-        if phrase == "Going To Next Target":
-            try:
-                send_signal_to_dog("target.wav")
-            except: ...
-        elif phrase == "Entering Search State":
-            try:
-                send_signal_to_dog("search.wav")
-            except: ...
-        elif phrase == "Human Detected":
-            try:
-                send_signal_to_dog("human.wav")
-            except: ...
-        elif phrase == "Starting Activity Recognition":
-            try:
-                send_signal_to_dog("activity.wav")
-            except: ...
-        else:
-            try:
-                send_temp_wav_file_to_dog()
-            except: ...
+        # if phrase == "Going To Next Target":
+        #     try:
+        #         send_signal_to_dog("target.wav")
+        #     except: ...
+        # elif phrase == "Entering Search State":
+        #     try:
+        #         send_signal_to_dog("search.wav")
+        #     except: ...
+        # elif phrase == "Human Detected":
+        #     try:
+        #         send_signal_to_dog("human.wav")
+        #     except: ...
+        # elif phrase == "Starting Activity Recognition":
+        #     try:
+        #         send_signal_to_dog("activity.wav")
+        #     except: ...
+        # else:
+        #     try:
+        #         send_temp_wav_file_to_dog()
+        #     except: ...
         self.engine.runAndWait()
 
 if __name__ == "__main__":
     processor = SpeechProcessor()
-    processor.speak("Human Detected")
+    processor.speak("Hey Professor, you look handsome")
