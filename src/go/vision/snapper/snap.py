@@ -5,7 +5,7 @@ import cv2
 
 class Snapper:
     def __init__(self):
-        self.cam = cv2.VideoCapture("http://146.244.98.19:5000/video_feed")
+        self.cam = cv2.VideoCapture("http://146.244.98.18:5000/video_feed")
         if not self.cam.isOpened():
             raise Exception("Could not open video stream.")
 
