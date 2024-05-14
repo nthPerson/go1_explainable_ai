@@ -55,15 +55,25 @@ class SpeechProcessor():
         self.engine.say(phrase)
         self.engine.save_to_file(phrase, file)
         if phrase == "Going To Next Target":
-            send_signal_to_dog("target.wav")
+            try:
+                send_signal_to_dog("target.wav")
+            except: ...
         elif phrase == "Entering Search State":
-            send_signal_to_dog("search.wav")
+            try:
+                send_signal_to_dog("search.wav")
+            except: ...
         elif phrase == "Human Detected":
-            send_signal_to_dog("human.wav")
+            try:
+                send_signal_to_dog("human.wav")
+            except: ...
         elif phrase == "Starting Activity Recognition":
-            send_signal_to_dog("activity.wav")
+            try:
+                send_signal_to_dog("activity.wav")
+            except: ...
         else:
-            send_temp_wav_file_to_dog()
+            try:
+                send_temp_wav_file_to_dog()
+            except: ...
         self.engine.runAndWait()
 
 if __name__ == "__main__":
