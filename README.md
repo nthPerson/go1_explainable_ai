@@ -36,3 +36,14 @@ Run examples with 'sudo' for memory locking.
 #### Python
 ##### arm
 change `sys.path.append('../lib/python/amd64')` to `sys.path.append('../lib/python/arm64')`
+
+
+### How to run: 
+Bring up the dog, 
+Connect via Wifi.
+run go_srv.py on the dog
+
+Come back run yolov5/yolo_srv_internal.py
+
+Go in terminal and run: go_srv.py
+Open unity and press play.
