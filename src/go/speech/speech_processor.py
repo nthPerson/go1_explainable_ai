@@ -78,4 +78,4 @@ class SpeechProcessor():
 
 if __name__ == "__main__":
     processor = SpeechProcessor()
-    processor.speak("Hey Professor, you look handsome")
+    processor.speak("Programming is for losers")
